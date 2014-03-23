@@ -1,5 +1,5 @@
 #This is designed to work with the post webhook functionality using the hubspot platform
-#Question sends them to salesengineers@hubspot.com
+#Question sends them to example@hubspot.com
 
 import webapp2
 import json
@@ -12,12 +12,14 @@ class MainHandler(webapp2.RequestHandler):
 
     def post(self):
         #grab a template to replace.  I have hardcoded in a template id for an email template called "ToBeReplaced"
-		#http://api.hubapi.com/content/api/v2/templates?access_token=d6ddc47d-b1e2-11e3-9a71-c9c13c316bd2&limit=100
-		#template id = 602923916
+		#http://api.hubapi.com/content/api/v2/templates?access_token=dat_token&limit=100
+		#template id = your template id
 
         #This is a json block from the wbehook that could be parsed or used in different ways.  I am just going to return the webhook data back as part
         #of the email template
         values = self.request
+        #put your access token here
+        dat_token = ""
 
 		#This needs to be in every mail otherwise the template update will fail
         canspam = """
@@ -38,7 +40,7 @@ class MainHandler(webapp2.RequestHandler):
 
         tosend = json.dumps(payload)
 
-        url = 'http://api.hubapi.com/content/api/v2/templates/602923916?access_token=d6ddc47d-b1e2-11e3-9a71-c9c13c316bd2'
+        url = 'http://api.hubapi.com/content/api/v2/templates/602923916?access_token=' + dat_token
 
 		#result = urlfetch.put(url=url,payload=tosend)  urlfetch put function doesn't work.  Will investigate later
         result = requests.put(url=url, data=tosend) #requests always works, not part of the default google app engine package
